@@ -1,0 +1,5 @@
+<div class="todo-item">
+  <h3>{{ todo.title }}</h3>
+  <p>{{ todo.desc }}</p>
+  <button class="btn btn-danger" [class.active]="todo.active" (click)="handleCLick(todo.sno)">Delete</button>
+</div>
