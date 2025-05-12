@@ -1,0 +1,15 @@
+<section class="mt-4">
+  <div class="container">
+    <div class="row gy-4">
+      <!-- product$ | async as  -->
+      <div class="col-12" *ngIf="product">
+        <div class="d-flex">
+          <div class="flex-shrink-0">
+            <img [src]="product.image" [alt]="product.title" class="img-fluid">
+          </div>
+          <div class="flex-grow-1 ms-3">{{ product.description }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
