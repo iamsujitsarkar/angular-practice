@@ -1,16 +1,11 @@
 import { Routes } from '@angular/router';
+import { LoginComponent } from './pages/login/login.component';
 import { ProductComponent } from './pages/products/product/product.component';
-import { HomeComponent } from './pages/home/home.component';
-import { ProductShowComponent } from './pages/products/show/show.component';
-import { productResolver } from './services/product.resolver.service';
+import { GuestGuard } from './guards/guest.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent},
-  {
-    path: 'products',
-    children: [
-      { path: '', component: ProductComponent},
-      { path: ':id', component: ProductShowComponent, resolve: { product: productResolver }},
-    ]
-  },
+  { path: '', pathMatch: 'full', redirectTo: '/welcome' },
+  { path: 'welcome', loadChildren: () => import('./pages/welcome/welcome.routes').then(m => m.WELCOME_ROUTES) },
+  { path: 'login', component: LoginComponent },
+  { path: 'products', component: ProductComponent, canActivate: [GuestGuard] },
 ];

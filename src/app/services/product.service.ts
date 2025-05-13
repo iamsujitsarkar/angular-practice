@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
+import { Inject, inject, Injectable } from '@angular/core';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { Product } from '../models/product.mode';
 
 @Injectable({
@@ -12,8 +12,19 @@ export class ProductService {
 
   private readonly http = inject(HttpClient)
 
+  constructor(@Inject('API_URL') private apiUrl: string) {}
+
   getProducts(): Observable<Product[] | []> {
     return this.http.get<Product[] | []>(this.PRODUCTS_URL).pipe(catchError((err) => of([])));
+
+    // return this.http.get<Product[]>(`${this.apiUrl}/products`)
+    //   .pipe(
+    //     map(res => res),
+    //     catchError(err => {
+    //       console.error('Failed to fetch products', err);
+    //       return throwError(() => err);
+    //     })
+    //   );
   }
 
   getProduct(id: number): Observable<Product | undefined> {
