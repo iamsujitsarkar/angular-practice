@@ -12,6 +12,10 @@ import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { productReducer } from './state/product.reducer';
+import { ProductEffects } from './state/product.effects';
 
 registerLocaleData(en);
 
@@ -27,5 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     { provide: 'API_URL', useValue: 'https://dummyjson.com' },
-  ]
+    provideStore({ products: productReducer }),
+    provideEffects([ProductEffects])
+]
 };

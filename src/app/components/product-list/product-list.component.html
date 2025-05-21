@@ -1,0 +1,55 @@
+<div class="controls">
+  <div class="search-container">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      placeholder="Search products..."
+      (keyup.enter)="onSearch()"
+    >
+    <button (click)="onSearch()">Search</button>
+    <button *ngIf="searchQuery" (click)="onClearSearch()">Clear</button>
+  </div>
+
+  <div class="categories">
+    <button
+      (click)="onCategorySelect(null)"
+      [class.active]="(selectedCategory$ | async) === null"
+    >
+      All
+    </button>
+    <button
+      *ngFor="let category of categories$ | async"
+      (click)="onCategorySelect(category)"
+      [class.active]="(selectedCategory$ | async) === category"
+    >
+      {{ category }}
+    </button>
+  </div>
+</div>
+
+<div *ngIf="(loading$ | async) && !(isAppending$ | async)" class="loading">Loading products...</div>
+<div *ngIf="error$ | async as error" class="error">{{ error }}</div>
+
+<div #productGrid class="product-grid-container">
+  <div class="product-grid">
+    <div *ngFor="let product of products$ | async" class="product-card">
+      <img [src]="product.thumbnail" [alt]="product.title">
+      <h3>{{ product.title }}</h3>
+      <p class="price">{{ product.price | currency }}</p>
+      <p class="rating">Rating: {{ product.rating }}/5</p>
+      <p class="category">{{ product.category }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="(loading$ | async) && (isAppending$ | async)" class="loading-more">
+    Loading more products...
+  </div>
+
+  <button
+    *ngIf="(canLoadMore$ | async) && !(isAppending$ | async)"
+    (click)="loadMoreProducts()"
+    class="load-more-btn"
+  >
+    Load More
+  </button>
+</div>
